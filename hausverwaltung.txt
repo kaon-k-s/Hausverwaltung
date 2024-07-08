@@ -1,0 +1,171 @@
+-- MariaDB dump 10.19  Distrib 10.4.32-MariaDB, for Win64 (AMD64)
+--
+-- Host: localhost    Database: hausverwaltung
+-- ------------------------------------------------------
+-- Server version	10.4.32-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `haus`
+--
+
+DROP TABLE IF EXISTS `haus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `haus` (
+  `HId` int(11) NOT NULL AUTO_INCREMENT,
+  `HNr` int(11) DEFAULT NULL,
+  `HStockwerke` int(11) DEFAULT NULL,
+  `HLSFK` int(11) DEFAULT NULL,
+  PRIMARY KEY (`HId`),
+  KEY `HLSFK` (`HLSFK`),
+  CONSTRAINT `haus_ibfk_1` FOREIGN KEY (`HLSFK`) REFERENCES `liegenschaft` (`LSId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `haus`
+--
+
+LOCK TABLES `haus` WRITE;
+/*!40000 ALTER TABLE `haus` DISABLE KEYS */;
+INSERT INTO `haus` VALUES (1,79,9,1),(2,56,5,2);
+/*!40000 ALTER TABLE `haus` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `liegenschaft`
+--
+
+DROP TABLE IF EXISTS `liegenschaft`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `liegenschaft` (
+  `LSId` int(11) NOT NULL AUTO_INCREMENT,
+  `LSGroesse` double DEFAULT NULL,
+  `LSVWFK` int(11) DEFAULT NULL,
+  `LSStrasse` varchar(39) DEFAULT NULL,
+  `LSNr` varchar(10) DEFAULT NULL,
+  `LSPLZ` varchar(5) DEFAULT NULL,
+  `LSOrt` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`LSId`),
+  KEY `LSVWFK` (`LSVWFK`),
+  CONSTRAINT `liegenschaft_ibfk_1` FOREIGN KEY (`LSVWFK`) REFERENCES `verwalter` (`VWId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `liegenschaft`
+--
+
+LOCK TABLES `liegenschaft` WRITE;
+/*!40000 ALTER TABLE `liegenschaft` DISABLE KEYS */;
+INSERT INTO `liegenschaft` VALUES (1,300,1,'Juliusstrasse','1','12345','Berlin'),(2,400,1,'Karl-Marx Strasse','2','12345','Berlin');
+/*!40000 ALTER TABLE `liegenschaft` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mieter`
+--
+
+DROP TABLE IF EXISTS `mieter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mieter` (
+  `MId` int(11) NOT NULL AUTO_INCREMENT,
+  `MName` varchar(30) DEFAULT NULL,
+  `MVorname` varchar(30) DEFAULT NULL,
+  `Einzugsdatum` date DEFAULT NULL,
+  PRIMARY KEY (`MId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mieter`
+--
+
+LOCK TABLES `mieter` WRITE;
+/*!40000 ALTER TABLE `mieter` DISABLE KEYS */;
+INSERT INTO `mieter` VALUES (1,'Muster','Max','2024-06-18'),(2,'Hurtig','Hugo','2023-05-17'),(3,'Dechanel','Indrid','2023-04-19');
+/*!40000 ALTER TABLE `mieter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `verwalter`
+--
+
+DROP TABLE IF EXISTS `verwalter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `verwalter` (
+  `VWId` int(11) NOT NULL AUTO_INCREMENT,
+  `VWName` varchar(30) DEFAULT NULL,
+  `VWVorname` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`VWId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `verwalter`
+--
+
+LOCK TABLES `verwalter` WRITE;
+/*!40000 ALTER TABLE `verwalter` DISABLE KEYS */;
+INSERT INTO `verwalter` VALUES (1,'Town','Tom');
+/*!40000 ALTER TABLE `verwalter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `wohnung`
+--
+
+DROP TABLE IF EXISTS `wohnung`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `wohnung` (
+  `WId` int(11) NOT NULL AUTO_INCREMENT,
+  `WNr` int(11) DEFAULT NULL,
+  `WGroesse` double DEFAULT NULL,
+  `WMiete` double DEFAULT NULL,
+  `WAnzRaum` int(11) DEFAULT NULL,
+  `WHausFK` int(11) DEFAULT NULL,
+  `WMieterFK` int(11) DEFAULT NULL,
+  `WStockwerk` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`WId`),
+  KEY `WHausFK` (`WHausFK`),
+  KEY `WMieterFK` (`WMieterFK`),
+  CONSTRAINT `wohnung_ibfk_1` FOREIGN KEY (`WHausFK`) REFERENCES `haus` (`HId`),
+  CONSTRAINT `wohnung_ibfk_2` FOREIGN KEY (`WMieterFK`) REFERENCES `mieter` (`MId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `wohnung`
+--
+
+LOCK TABLES `wohnung` WRITE;
+/*!40000 ALTER TABLE `wohnung` DISABLE KEYS */;
+INSERT INTO `wohnung` VALUES (2,1,70,700,3,1,3,'EG'),(3,7,50,500,2,2,2,'1.OG'),(4,3,100,1000,3,1,1,'2.OG');
+/*!40000 ALTER TABLE `wohnung` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-07-08 10:53:04
